@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ACK SHS Awards Voting - Login</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap');
+
+  :root {
+    --color-bg-start: #0d1117;
+    --color-bg-end: #161b22;
+    --color-card-bg: #21262d;
+    --color-primary-blue: #58a6ff;
+    --color-primary-blue-hover: #1f6feb;
+    --color-text-light: #c9d1d9;
+    --color-text-muted: #8b949e;
+    --color-button-bg: #238636;
+    --color-button-hover: #2ea043;
+    --color-accent-gold: #ffd700;
+    --color-error: #f85149;
+    --shadow-dark: rgba(0, 0, 0, 0.7);
+    --shadow-light: rgba(88, 166, 255, 0.2);
+  }
+
+  /* Reset and base styles */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--color-bg-start), var(--color-bg-end));
+    color: var(--color-text-light);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: auto; /* Changed from hidden to auto */
+  }
+
+  /* Background decorative elements */
+  .bg-decoration {
+    position: fixed; /* Changed from absolute to fixed */
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--color-primary-blue), transparent);
+    opacity: 0.1;
+    filter: blur(60px);
+  }
+
+  .circle-1 {
+    width: 400px;
+    height: 400px;
+    top: -100px;
+    left: -100px;
+  }
+
+  .circle-2 {
+    width: 600px;
+    height: 600px;
+    bottom: -200px;
+    right: -200px;
+  }
+
+  /* Loader styles */
+  #loader {
+    position: fixed;
+    inset: 0;
+    background: var(--color-bg-start);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+
+  #loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /* Loader spinner */
+  .spinner {
+    width: 80px;
+    height: 80px;
+    border: 8px solid #1c2531;
+    border-top: 8px solid var(--color-primary-blue);
+    border-radius: 50%;
+    animation: spin 1.2s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Login container */
+  .login-container {
+    background-color: var(--color-card-bg);
+    width: 100%;
+    max-width: 480px;
+    border-radius: 20px;
+    padding: 40px 30px; /* Reduced padding for smaller screens */
+    box-shadow: 0 20px 50px var(--shadow-dark);
+    text-align: center;
+    position: relative;
+    overflow: visible; /* Changed from hidden to visible */
+    border: 1px solid rgba(88, 166, 255, 0.1);
+    margin: 20px 0; /* Added margin */
+  }
+
+  .login-logo {
+    max-height: 120px; /* Reduced size */
+    max-width: 120px; /* Reduced size */
+    margin: 0 auto 20px; /* Reduced margin */
+    filter: drop-shadow(0 0 10px var(--color-primary-blue));
+    border: 5px solid var(--color-primary-blue);
+    border-radius: 50%;
+    padding: 8px;
+    background: var(--color-bg-end);
+    box-shadow: 0 0 20px var(--color-primary-blue);
+    display: block;
+  }
+
+  .login-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 2rem; /* Reduced size */
+    color: var(--color-primary-blue);
+    margin: 0 0 8px; /* Reduced margin */
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px var(--shadow-light);
+  }
+
+  .login-subtitle {
+    font-size: 1rem; /* Reduced size */
+    color: var(--color-text-muted);
+    margin-bottom: 25px; /* Reduced margin */
+    font-weight: 500;
+  }
+
+  .payment-notice {
+    background-color: rgba(35, 134, 54, 0.15);
+    border: 1px solid var(--color-button-bg);
+    border-radius: 10px;
+    padding: 12px; /* Reduced padding */
+    margin-bottom: 20px; /* Reduced margin */
+    font-size: 0.9rem; /* Reduced size */
+    color: var(--color-text-light);
+  }
+
+  .form-group {
+    margin-bottom: 20px; /* Reduced margin */
+  }
+
+  .form-label {
+    display: block;
+    font-size: 0.95rem; /* Reduced size */
+    font-weight: 600;
+    color: var(--color-text-light);
+    margin-bottom: 8px; /* Reduced margin */
+  }
+
+  .phone-input-container {
+    display: flex;
+    align-items: center;
+    background-color: #161b22;
+    border-radius: 12px;
+    border: 2px solid #30363d;
+  }
+
+  .country-code {
+    padding: 0 12px; /* Reduced padding */
+    font-size: 0.95rem; /* Reduced size */
+    color: var(--color-text-light);
+    border-right: 1px solid #30363d;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 14px 12px; /* Reduced padding */
+    font-size: 0.95rem; /* Reduced size */
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: var(--color-text-light);
+    border-radius: 0 12px 12px 0;
+  }
+
+  .login-btn {
+    background: linear-gradient(135deg, var(--color-primary-blue), var(--color-primary-blue-hover));
+    border: none;
+    color: white;
+    padding: 14px 24px; /* Reduced padding */
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1rem; /* Reduced size */
+    width: 100%;
+    box-shadow: 0 8px 20px rgba(88, 166, 255, 0.3);
+    margin-top: 10px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+
+  .terms-notice {
+    font-size: 0.8rem; /* Reduced size */
+    color: var(--color-text-muted);
+    margin-top: 20px; /* Reduced margin */
+    line-height: 1.5;
+  }
+
+  .login-footer {
+    margin-top: 30px; /* Reduced margin */
+    font-size: 0.85rem; /* Reduced size */
+    color: var(--color-text-muted);
+  }
+
+  /* Responsive adjustments */
+  @media (min-width: 480px) {
+    .login-container {
+      padding: 50px 60px; /* Original padding for larger screens */
+    }
+    .login-logo {
+      max-height: 140px;
+      max-width: 140px;
+      margin-bottom: 30px;
+    }
+    .login-title {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    .login-subtitle {
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+    }
+    .payment-notice {
+      padding: 15px;
+      margin-bottom: 30px;
+      font-size: 0.95rem;
+    }
+  }
+</style>
+</head>
+<body>
+  <!-- Background decoration -->
+  <div class="bg-decoration">
+    <div class="bg-circle circle-1"></div>
+    <div class="bg-circle circle-2"></div>
+  </div>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Login Container -->
+  <div class="login-container">
+    <img src="logo.jpeg" alt="ACK SHS Logo" class="login-logo" />
+    <h1 class="login-title">ACK SRC AWARDS</h1>
+    <p class="login-subtitle">Cast your votes for this year's awards</p>
+    
+    <div class="payment-notice">
+      <strong>Payment Notice:</strong> A fee of <strong>₵1.00</strong> will be deducted from your mobile money account for each vote you cast.
+    </div>
+    
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="phone" class="form-label">Mobile Money Number</label>
+        <div class="phone-input-container">
+          <span class="country-code">+233</span>
+          <input 
+            type="tel" 
+            id="phone" 
+            class="form-input" 
+            placeholder="e.g. 241234567" 
+            pattern="[0-9]{9}" 
+            title="Enter your 9-digit number without the leading 0"
+            required
+          />
+        </div>
+      </div>
+      
+      <button type="submit" class="login-btn">Continue to Payment</button>
+      
+      <p class="terms-notice">
+        By continuing, you agree to our <a href="#">Terms</a> and acknowledge that a ₵1.00 fee will be charged per vote.
+      </p>
+    </form>
+  </div>
+
+  <div class="login-footer">
+    &copy; 2025 ACK SRC Awards. All rights reserved.
+  </div>
+
+<script>
+  // Hide loader after page load
+  window.addEventListener('load', () => {
+    const loader = document.getElementById('loader');
+    setTimeout(() => {
+      loader.classList.add('hidden');
+    }, 1500);
+  });
+
+  // Form submission
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const phone = document.getElementById('phone').value;
+    
+    if (!/^[0-9]{9}$/.test(phone)) {
+      alert('Please enter a valid 9-digit phone number (without the leading 0)');
+      return;
+    }
+    
+    const formattedPhone = `0${phone}`;
+    if (confirm(`A payment request for ₵1.00 will be sent to ${formattedPhone}. Continue?`)) {
+      window.location.href = 'index.html?phone=' + encodeURIComponent(formattedPhone);
+    }
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const phone = document.getElementById('phone').value;
+    
+    if (!/^[0-9]{9}$/.test(phone)) {
+      alert('Please enter a valid 9-digit phone number (without the leading 0)');
+      return;
+    }
+    
+    const formattedPhone = `0${phone}`;
+    if (confirm(`A payment request for ₵1.00 will be sent to ${formattedPhone}. Continue?`)) {
+      // Store phone number for the voting page
+      sessionStorage.setItem('votingPhone', formattedPhone);
+      // Redirect to voting page after payment confirmation
+      window.location.href = 'index.html'; // or 'voting.html' if you renamed it
+    }
+  });
+</script>
+</body>
+</html>

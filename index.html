@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ACK SHS Awards Voting</title>
+  <link rel="stylesheet" href="./styles/style.css">
+
+</head>
+
+<body>
+  <div class="container">
+    <!-- Navigation -->
+    <div class="nav-tabs">
+      <button class="tab-button active" onclick="showTab('login')">Login</button>
+      <button class="tab-button" onclick="showTab('voting')">Voting</button>
+      <button class="tab-button" onclick="showTab('dashboard')">Dashboard</button>
+    </div>
+
+    <!-- Login Tab -->
+    <div id="login" class="tab-content active">
+      <div class="login-container">
+        <header>
+          <img src="./logo.jpeg" alt="ACK SHS Logo" />
+          <h1>ACK SRC Awards</h1>
+          <p>Enter your phone number to continue</p>
+        </header>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label class="form-label">Phone Number (+233)</label>
+            <input type="tel" id="phoneNumber" class="form-input" placeholder="e.g. 241234567" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Continue</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Voting Tab -->
+    <div id="voting" class="tab-content">
+      <header>
+        <img src="./logo.jpeg" alt="ACK SHS Logo" />
+        <h1>ACK SRC Awards Voting</h1>
+        <p id="userInfo">Welcome! Select nominees and choose your vote amount.</p>
+      </header>
+
+      <!-- Vote Selection -->
+      <div class="vote-selection">
+        <h3>Select Vote Amount</h3>
+        <p>₵1 = 1 Vote | Choose how many votes you want to cast</p>
+        <div class="amount-selector">
+          <div class="amount-option" data-amount="1">₵1 (1 Vote)</div>
+          <div class="amount-option" data-amount="5">₵5 (5 Votes)</div>
+          <div class="amount-option" data-amount="10">₵10 (10 Votes)</div>
+          <div class="amount-option" data-amount="20">₵20 (20 Votes)</div>
+          <div class="amount-option" data-amount="50">₵50 (50 Votes)</div>
+        </div>
+        <div class="vote-info" id="voteInfo" style="display: none;">
+          <strong>Selected:</strong> <span id="selectedAmount">0</span> cedis = <span id="selectedVotes">0</span> votes
+        </div>
+      </div>
+
+      <!-- Award Categories -->
+      <div class="award-category">
+        <h2>1 - Most Famous</h2>
+        <div class="nominees">
+          <div class="nominee" data-id="101" data-name="Maccarthy Charles">
+            <img src="./Maccarthy Charles.jpg" alt="Maccarthy Charles" />
+            <p>Maccarthy Charles</p>
+            <div class="vote-count">Votes: <span>0</span></div>
+            <button class="btn vote-btn">Vote</button>
+          </div>
+          <div class="nominee" data-id="102" data-name="Samuel Boakye">
+            <img src="./Samuel .jpg" alt="Samuel Boakye" />
+            <p>Samuel Boakye</p>
+            <div class="vote-count">Votes: <span>0</span></div>
+            <button class="btn vote-btn">Vote</button>
+          </div>
+          <div class="nominee" data-id="103" data-name="Victor Clarke Sosu">
+            <img src="https://via.placeholder.com/120" alt="Victor Clarke Sosu" />
+            <p>Victor Clarke Sosu</p>
+            <div class="vote-count">Votes: <span>0</span></div>
+            <button class="btn vote-btn">Vote</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="award-category">
+        <h2>2 - Best Dancer</h2>
+        <div class="nominees">
+          <div class="nominee" data-id="201" data-name="William Asare">
+            <img src="https://via.placeholder.com/120" alt="William Asare" />
+            <p>William Asare</p>
+            <div class="vote-count">Votes: <span>0</span></div>
+            <button class="btn vote-btn">Vote</button>
+          </div>
+          <div class="nominee" data-id="202" data-name="Esther Mensah">
+            <img src="https://via.placeholder.com/120" alt="Esther Mensah" />
+            <p>Esther Mensah</p>
+            <div class="vote-count">Votes: <span>0</span></div>
+            <button class="btn vote-btn">Vote</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="award-category">
+        <h2>3 - Perfect Lady</h2>
+        <div class="nominees">
+          <div class="nominee" data-id="301" data-name="Lordina Arthur">
+            <img src="./lordina.jpg" alt="Lordina Arthur" />
+            <p>Lordina Arthur</p>
+            <div class="vote-count">Votes: <span>0</span></div>
+            <button class="btn vote-btn">Vote</button>
+          </div>
+          <div class="nominee" data-id="302" data-name="Madinatu">
+            <img src="./mid.jpg" alt="Madinatu" />
+            <p>Madinatu</p>
+            <div class="vote-count">Votes: <span>0</span></div>
+            <button class="btn vote-btn">Vote</button>
+          </div>
+          <div class="nominee" data-id="303" data-name="Franka">
+            <img src="https://via.placeholder.com/120" alt="Franka" />
+            <p>Franka</p>
+            <div class="vote-count">Votes: <span>0</span></div>
+            <button class="btn vote-btn">Vote</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Tab -->
+    <div id="dashboard" class="tab-content">
+      <header>
+        <h1>Voting Analytics Dashboard</h1>
+        <p>Real-time voting statistics and leaderboards</p>
+      </header>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number" id="totalVotes">0</div>
+          <div class="stat-label">Total Votes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="totalRevenue">₵0</div>
+          <div class="stat-label">Total Revenue</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="totalVoters">0</div>
+          <div class="stat-label">Total Voters</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="avgVoteValue">₵0</div>
+          <div class="stat-label">Avg Vote Value</div>
+        </div>
+      </div>
+
+      <!-- Category Leaderboards -->
+      <div id="leaderboards"></div>
+    </div>
+  </div>
+
+  <!-- Payment Modal -->
+  <div id="paymentModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Confirm Payment</h2>
+      <div id="paymentDetails"></div>
+      <div style="margin-top: 20px;">
+        <button class="btn btn-primary" id="confirmPayment">Pay with Mobile Money</button>
+        <button class="btn" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paystack Script -->
+  <script src="https://js.paystack.co/v2/inline.js"></script>
+
+  <script>
+    // Global Variables
+    let currentUser = null;
+    let selectedAmount = 0;
+    let selectedVotes = 0;
+    let currentNominee = null;
+
+    // Paystack Public Key 
+   const PAYSTACK_PUBLIC_KEY = 'pk_live_68491193615ecf1c7135b0e4a0db63d90b5148a4';
+
+    // Vote Storage (simulating database)
+    let voteData = {
+      votes: {},
+      transactions: [],
+      voters: new Set(),
+      totalRevenue: 0
+    };
+
+    // Categories for dashboard
+    const categories = {
+      1: 'Most Famous',
+      2: 'Best Dancer',
+      3: 'Perfect Lady'
+    };
+
+    // Data Persistence Functions
+    function loadVoteData() {
+      const stored = localStorage.getItem('voteData');
+      if (stored) {
+        voteData = JSON.parse(stored);
+        voteData.voters = new Set(voteData.voters); // Convert array back to Set
+      }
+    }
+
+    function saveVoteData() {
+      const dataToStore = {
+        ...voteData,
+        voters: Array.from(voteData.voters) // Convert Set to array for storage
+      };
+      localStorage.setItem('voteData', JSON.stringify(dataToStore));
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function () {
+      loadVoteData();
+      updateVoteDisplay(); // Update vote counts on load
+      updateDashboard();
+      setupEventListeners();
+    });
+
+    function setupEventListeners() {
+      // Login form
+      document.getElementById('loginForm').addEventListener('submit', handleLogin);
+
+      // Amount selection
+      document.querySelectorAll('.amount-option').forEach(option => {
+        option.addEventListener('click', function () {
+          selectAmount(parseInt(this.dataset.amount));
+        });
+      });
+
+      // Vote buttons
+      document.querySelectorAll('.vote-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+          const nominee = this.closest('.nominee');
+          handleVote(nominee);
+        });
+      });
+
+      // Modal close
+      document.querySelector('.close').addEventListener('click', closeModal);
+      document.getElementById('confirmPayment').addEventListener('click', processPayment);
+    }
+
+    function showTab(tabName) {
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      document.getElementById(tabName).classList.add('active');
+      document.querySelector(`.tab-button[onclick="showTab('${tabName}')"]`).classList.add('active');
+
+      if (tabName === 'dashboard') {
+        updateDashboard();
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const phone = document.getElementById('phoneNumber').value.trim();
+
+      if (!/^[0-9]{9}$/.test(phone)) {
+        alert('Please enter a valid 9-digit phone number');
+        return;
+      }
+
+      const formattedPhone = `0${phone}`;
+      currentUser = {
+        phone: formattedPhone,
+        loginTime: new Date()
+      };
+
+      document.getElementById('userInfo').textContent = `Welcome ${formattedPhone}! Select nominees and vote amount.`;
+      showTab('voting');
+    }
+
+    function selectAmount(amount) {
+      selectedAmount = amount;
+      selectedVotes = amount; // 1 cedi = 1 vote
+
+      document.querySelectorAll('.amount-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      event.target.classList.add('selected');
+
+      document.getElementById('selectedAmount').textContent = amount;
+      document.getElementById('selectedVotes').textContent = selectedVotes;
+      document.getElementById('voteInfo').style.display = 'block';
+    }
+
+    function handleVote(nominee) {
+      if (!currentUser) {
+        alert('Please login first');
+        showTab('login');
+        return;
+      }
+
+      if (selectedAmount === 0) {
+        alert('Please select vote amount first');
+        return;
+      }
+
+      currentNominee = {
+        id: nominee.dataset.id,
+        name: nominee.dataset.name
+      };
+
+      showPaymentModal();
+    }
+
+    function showPaymentModal() {
+      const modal = document.getElementById('paymentModal');
+      const details = document.getElementById('paymentDetails');
+
+      details.innerHTML = `
+    <div style="text-align: center;">
+      <h3>Payment Details</h3>
+      <p><strong>Nominee:</strong> ${currentNominee.name}</p>
+      <p><strong>Amount:</strong> ₵${selectedAmount}</p>
+      <p><strong>Votes:</strong> ${selectedVotes}</p>
+      <p><strong>Phone:</strong> ${currentUser.phone}</p>
+      <div class="vote-info">
+        A mobile money request will be sent to your phone
+      </div>
+    </div>
+  `;
+
+      modal.style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('paymentModal').style.display = 'none';
+    }
+
+    function processPayment() {
+      const handler = PaystackPop.setup({
+        key: PAYSTACK_PUBLIC_KEY,
+        email: currentUser.phone + '@techaccessforum.com', // Dummy email for demo
+        amount: selectedAmount * 100, // Convert cedis to pesewas
+        currency: 'GHS',
+        channels: ['mobile_money'],
+        metadata: {
+          nomineeId: currentNominee.id,
+          nomineeName: currentNominee.name,
+          votes: selectedVotes
+        },
+        callback: function (response) {
+          handleSuccessfulPayment(response);
+        },
+        onClose: function () {
+          alert('Payment window closed');
+        }
+      });
+      handler.openIframe();
+    }
+
+    function handleSuccessfulPayment(response) {
+      if (response.status === 'success') {
+        recordVote(response);
+
+        const successDiv = document.createElement('div');
+        successDiv.className = 'success-message';
+        successDiv.innerHTML = `
+      <strong>Payment Successful!</strong><br>
+      You've successfully voted for ${currentNominee.name} with ${selectedVotes} votes.<br>
+      Transaction Reference: ${response.reference}
+    `;
+
+        document.querySelector('.vote-selection').appendChild(successDiv);
+
+        updateVoteDisplay();
+        updateDashboard();
+
+        resetVoteSelection();
+        closeModal();
+
+        setTimeout(() => {
+          if (successDiv.parentNode) {
+            successDiv.parentNode.removeChild(successDiv);
+          }
+        }, 5000);
+      }
+    }
+
+    function recordVote(paymentResponse) {
+      const voteRecord = {
+        nomineeId: currentNominee.id,
+        nomineeName: currentNominee.name,
+        votes: selectedVotes,
+        amount: selectedAmount,
+        voter: currentUser.phone,
+        timestamp: new Date(),
+        transactionRef: paymentResponse.reference
+      };
+
+      if (!voteData.votes[currentNominee.id]) {
+        voteData.votes[currentNominee.id] = {
+          name: currentNominee.name,
+          totalVotes: 0,
+          totalAmount: 0
+        };
+      }
+
+      voteData.votes[currentNominee.id].totalVotes += selectedVotes;
+      voteData.votes[currentNominee.id].totalAmount += selectedAmount;
+      voteData.transactions.push(voteRecord);
+      voteData.voters.add(currentUser.phone);
+      voteData.totalRevenue += selectedAmount;
+
+      saveVoteData();
+    }
+
+    function updateVoteDisplay() {
+      document.querySelectorAll('.nominee').forEach(nominee => {
+        const id = nominee.dataset.id;
+        const voteSpan = nominee.querySelector('.vote-count span');
+        if (voteData.votes[id]) {
+          voteSpan.textContent = voteData.votes[id].totalVotes;
+        }
+      });
+    }
+
+    function resetVoteSelection() {
+      selectedAmount = 0;
+      selectedVotes = 0;
+      currentNominee = null;
+
+      document.querySelectorAll('.amount-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      document.getElementById('voteInfo').style.display = 'none';
+    }
+
+    function updateDashboard() {
+      const totalVotes = Object.values(voteData.votes).reduce((sum, nominee) => sum + nominee.totalVotes, 0);
+      const totalVoters = voteData.voters.size;
+      const avgVoteValue = totalVoters > 0 ? (voteData.totalRevenue / totalVoters).toFixed(2) : 0;
+
+      document.getElementById('totalVotes').textContent = totalVotes;
+      document.getElementById('totalRevenue').textContent = `₵${voteData.totalRevenue}`;
+      document.getElementById('totalVoters').textContent = totalVoters;
+      document.getElementById('avgVoteValue').textContent = `₵${avgVoteValue}`;
+
+      updateLeaderboards();
+    }
+
+    function updateLeaderboards() {
+      const leaderboardsDiv = document.getElementById('leaderboards');
+
+      const categoryLeaders = {};
+
+      Object.entries(voteData.votes).forEach(([id, data]) => {
+        const categoryId = Math.floor(id / 100);
+        if (!categoryLeaders[categoryId]) {
+          categoryLeaders[categoryId] = [];
+        }
+        categoryLeaders[categoryId].push({ id, ...data });
+      });
+
+      let leaderboardHTML = '';
+
+      Object.entries(categoryLeaders).forEach(([categoryId, nominees]) => {
+        nominees.sort((a, b) => b.totalVotes - a.totalVotes);
+
+        leaderboardHTML += `
+      <div class="leaderboard">
+        <h3>${categories[categoryId] || `Category ${categoryId}`}</h3>
+    `;
+
+        nominees.forEach((nominee, index) => {
+          let rankClass = '';
+          if (index === 0) rankClass = 'gold';
+          else if (index === 1) rankClass = 'silver';
+          else if (index === 2) rankClass = 'bronze';
+
+          leaderboardHTML += `
+        <div class="leaderboard-item">
+          <div style="display: flex; align-items: center; gap: 15px;">
+            <div class="rank ${rankClass}">${index + 1}</div>
+            <div>
+              <div style="font-weight: 600;">${nominee.name}</div>
+              <div style="color: var(--color-text);">Votes: ${nominee.totalVotes} | Amount: ₵${nominee.totalAmount}</div>
+            </div>
+          </div>
+        </div>
+      `;
+        });
+
+        leaderboardHTML += `</div>`;
+      });
+
+      leaderboardsDiv.innerHTML = leaderboardHTML;
+    }
+  </script>
