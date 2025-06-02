@@ -1,5 +1,5 @@
 // Initialize PocketBase
-const pb = new PocketBase('https://siga-2000.pockethost.io/api/');
+const pb = new PocketBase('https://siga-2000.pockethost.io/');
 
 class DynamicVotingSystem {
   constructor() {
@@ -242,7 +242,7 @@ class DynamicVotingSystem {
       const userInfo = document.getElementById('userInfo');
       userInfo.textContent = `Welcome ${user.name || formattedPhone}! Select nominees and vote amount.`;
 
-      await this.logActivity('user_login', { phone: formattedPhone });
+      // await this.logActivity('user_login', { phone: formattedPhone });
       window.showTab('voting');
     } catch (error) {
       console.error('Login error:', error);
@@ -252,17 +252,17 @@ class DynamicVotingSystem {
 
   async findOrCreateUser(phone) {
     try {
-      const existingUsers = await pb.collection('users').getFullList({
+      const existingUsers = await pb.collection('voters_info').getFullList({
         filter: `phone = "${phone}"`
       });
 
       if (existingUsers.length > 0) {
         const user = existingUsers[0];
-        return await pb.collection('users').update(user.id, {
+        return await pb.collection('voters_info').update(user.id, {
           lastLogin: new Date().toISOString()
         });
       } else {
-        return await pb.collection('users').create({
+        return await pb.collection('voters_info').create({
           phone: phone,
           isActive: true,
           totalSpent: 0,
@@ -283,7 +283,7 @@ class DynamicVotingSystem {
       const expiresAt = new Date();
       expiresAt.setHours(expiresAt.getHours() + 24);
 
-      return await pb.collection('voting_sessions').create({
+      return await pb.collection('voters_info').create({
         userId: userId,
         sessionToken: sessionToken,
         isActive: true,
@@ -473,19 +473,19 @@ class DynamicVotingSystem {
     }
   }
 
-  async logActivity(action, details = {}) {
-    try {
-      await pb.collection('audit_logs').create({
-        userId: this.currentUser?.id,
-        action: action,
-        details: details,
-        ipAddress: await this.getClientIP(),
-        userAgent: navigator.userAgent
-      });
-    } catch (error) {
-      console.error('Error logging activity:', error);
-    }
-  }
+  // async logActivity(action, details = {}) {
+  //   try {
+  //     await pb.collection('audit_logs').create({
+  //       userId: this.currentUser?.id,
+  //       action: action,
+  //       details: details,
+  //       ipAddress: await this.getClientIP(),
+  //       userAgent: navigator.userAgent
+  //     });
+  //   } catch (error) {
+  //     console.error('Error logging activity:', error);
+  //   }
+  // }
 
   async updateDashboard() {
     try {
